@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "hooks": {
+    "sessionStart": [
+      {
+        "type": "command",
+        "bash": "./.github/hooks/run-copilot-logger.sh sessionStart",
+        "powershell": ".\\.github\\hooks\\run-copilot-logger.ps1 sessionStart",
+        "timeoutSec": 10
+      }
+    ],
+    "agentStop": [
+      {
+        "type": "command",
+        "bash": "./.github/hooks/run-copilot-logger.sh agentStop",
+        "powershell": ".\\.github\\hooks\\run-copilot-logger.ps1 agentStop",
+        "timeoutSec": 10
+      }
+    ],
+    "preToolUse": [
+      {
+        "type": "command",
+        "bash": "./.github/hooks/run-copilot-logger.sh preToolUse",
+        "powershell": ".\\.github\\hooks\\run-copilot-logger.ps1 preToolUse",
+        "timeoutSec": 10
+      }
+    ],
+    "postToolUse": [
+      {
+        "type": "command",
+        "bash": "./.github/hooks/run-copilot-logger.sh postToolUse",
+        "powershell": ".\\.github\\hooks\\run-copilot-logger.ps1 postToolUse",
+        "timeoutSec": 10
+      }
+    ],
+    "postToolUseFailure": [
+      {
+        "type": "command",
+        "bash": "./.github/hooks/run-copilot-logger.sh postToolUseFailure",
+        "powershell": ".\\.github\\hooks\\run-copilot-logger.ps1 postToolUseFailure",
+        "timeoutSec": 10
+      }
+    ],
+    "subagentStart": [
+      {
+        "type": "command",
+        "bash": "./.github/hooks/run-copilot-logger.sh subagentStart",
+        "powershell": ".\\.github\\hooks\\run-copilot-logger.ps1 subagentStart",
+        "timeoutSec": 10
+      }
+    ],
+    "subagentStop": [
+      {
+        "type": "command",
+        "bash": "./.github/hooks/run-copilot-logger.sh subagentStop",
+        "powershell": ".\\.github\\hooks\\run-copilot-logger.ps1 subagentStop",
+        "timeoutSec": 10
+      }
+    ]
+  }
+}
