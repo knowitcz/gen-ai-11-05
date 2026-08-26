@@ -1,0 +1,21 @@
+# Configuration for fetch_skill.py
+#
+# destination: local folder where fetched skills are stored (mirrors the
+#              upstream ".github/skills/<name>" layout, i.e. skills end up
+#              in "<destination>/<name>")
+#
+# sources: list of remote locations to pull skills from
+#   space:    base URL of the git hosting namespace (e.g. an org/user page),
+#             trailing slash optional
+#   source:   "<repo>:<revision>" - repo name relative to `space`, and the
+#             branch, tag, or commit to check out
+#   skills:   list of skill folder names to fetch from that repo's
+#             .github/skills directory
+
+destination: .github/skills
+
+sources:
+  - space: https://github.com/knowitcz/
+    source: meta-agents:main
+    skills:
+      - ai-assets-designer
