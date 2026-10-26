@@ -14,7 +14,11 @@ from app.api.transaction_routes import router as transaction_router
 from app.db import engine
 from app.logging_config import setup_logging
 from app.models import Client, Transaction  # noqa: F401 - ensure tables are registered
-from app.startup import create_default_accounts, create_default_clients
+from app.startup import (
+    create_default_accounts,
+    create_default_clients,
+    create_default_transactions,
+)
 
 # Setup logging first
 setup_logging()
@@ -51,3 +55,4 @@ def serve_frontend(path: str):
 
 create_default_clients()
 create_default_accounts()
+create_default_transactions()
