@@ -1,7 +1,9 @@
 import { ArrowLeft } from 'lucide-react'
 import { Link, useParams } from 'react-router'
-import { ApiError, getClient } from '@/api/clients'
+import { getClient } from '@/api/clients'
+import { ApiError } from '@/api/http'
 import { ErrorState, LoadingState } from '@/components/RequestStates'
+import { TransactionsSection } from '@/components/TransactionsSection'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
@@ -33,7 +35,13 @@ function ClientDetailContent({ clientId }: { clientId: number }) {
     if (state.error instanceof ApiError && state.error.status === 404) return <ClientNotFound />
     return <ErrorState message="The client could not be loaded." onRetry={retry} />
   }
-  return <ClientCard client={state.data} />
+  return (
+    <>
+      <ClientCard client={state.data} />
+      {/* The transactions API answers 404 for a client without accounts, so there is nothing to show. */}
+      {state.data.accounts.length > 0 && <TransactionsSection client={state.data} />}
+    </>
+  )
 }
 
 function ClientCard({ client }: { client: ClientDetail }) {

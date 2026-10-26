@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it } from 'vitest'
-import { jsonResponse, mockFetch, mockPendingFetch, renderAt } from '@/test/utils'
+import { json, mockApi, networkError, pending, renderAt } from '@/test/utils'
 
 const clients = [
   { id: 1, name: 'Alice', national_number: '900101/1234' },
@@ -10,21 +10,21 @@ const clients = [
 
 describe('ClientsPage', () => {
   it('redirects the root to the client list', async () => {
-    mockFetch(jsonResponse(clients))
+    mockApi({ '/api/v1/client': json(clients) })
     renderAt('/')
 
     expect(await screen.findByRole('heading', { name: 'Clients' })).toBeInTheDocument()
   })
 
   it('shows a loading state while the clients are being loaded', () => {
-    mockPendingFetch()
+    mockApi({ '/api/v1/client': pending })
     renderAt('/clients')
 
     expect(screen.getByRole('status', { name: 'Loading clients' })).toBeInTheDocument()
   })
 
   it('lists the clients with their number, name and national ID number', async () => {
-    mockFetch(jsonResponse(clients))
+    mockApi({ '/api/v1/client': json(clients) })
     renderAt('/clients')
 
     const aliceRow = (await screen.findByText('Alice')).closest('tr')!
@@ -34,7 +34,7 @@ describe('ClientsPage', () => {
   })
 
   it('links every client to its detail', async () => {
-    mockFetch(jsonResponse(clients))
+    mockApi({ '/api/v1/client': json(clients) })
     renderAt('/clients')
 
     const links = await screen.findAllByRole('link', { name: 'Detail' })
@@ -42,10 +42,10 @@ describe('ClientsPage', () => {
   })
 
   it('opens the detail when a row is clicked', async () => {
-    mockFetch(
-      jsonResponse(clients),
-      jsonResponse({ ...clients[1], accounts: [] }),
-    )
+    mockApi({
+      '/api/v1/client': json(clients),
+      '/api/v1/client/2': json({ ...clients[1], accounts: [] }),
+    })
     renderAt('/clients')
 
     await userEvent.click(await screen.findByText('Bob'))
@@ -54,14 +54,14 @@ describe('ClientsPage', () => {
   })
 
   it('tells the user when there are no clients', async () => {
-    mockFetch(jsonResponse([]))
+    mockApi({ '/api/v1/client': json([]) })
     renderAt('/clients')
 
     expect(await screen.findByText('No clients found.')).toBeInTheDocument()
   })
 
   it('shows an error and loads the clients again on retry', async () => {
-    const fetchMock = mockFetch(new TypeError('Failed to fetch'), jsonResponse(clients))
+    const fetchMock = mockApi({ '/api/v1/client': [networkError(), json(clients)] })
     renderAt('/clients')
 
     expect(await screen.findByText('Clients could not be loaded.')).toBeInTheDocument()
