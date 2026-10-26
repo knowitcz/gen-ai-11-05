@@ -57,6 +57,29 @@ uvicorn app.main:app --reload
 
 ## Access the Server
 
-Open your browser and type `localhost:8000`. In essential workshop you will see Swagger. In advanced workshop you will see a simple web page.
+Open your browser and type `localhost:8000`. You will see the web frontend once it is built (see below). The API documentation (Swagger) is at `localhost:8000/docs`.
+
+## Frontend
+
+The web frontend lives in `resources/web` (React, TypeScript, Vite) and needs Node.js. Its build is not part of the repository, so build it before the server above can serve it:
+
+```bash
+cd resources/web
+npm install
+npm run build
+```
+
+The build goes to `resources/web/dist`; run `npm run build` again after every change. Until the frontend is built, `localhost:8000` answers with an error, while the API and `localhost:8000/docs` work.
+
+While working on the frontend, use the development server instead — it reloads on every change:
+
+```bash
+npm run dev
+```
+
+It runs on `localhost:5173` and forwards `/api` calls to the backend on `localhost:8000`, so keep the backend running. Other commands:
+
+- `npm test` — run the tests
+- `npm run lint` — check the code
 
 > Hint: you can try browser in VS Code
